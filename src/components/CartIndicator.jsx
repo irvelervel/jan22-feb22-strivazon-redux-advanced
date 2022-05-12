@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button'
 import { FaShoppingCart } from 'react-icons/fa'
 import { useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, FormControl } from 'react-bootstrap'
+import { Alert, Form, FormControl, Spinner } from 'react-bootstrap'
 import { useState } from 'react'
 import { changeUsername } from '../slices/user/userSlice'
 
@@ -14,8 +14,12 @@ const mapStateToProps = (state) => {
     // every PROPERTY of this OBJECT will be a new PROP for CartIndicator
     cartLength: state.cart.content.length,
     userName: state.user.name,
+    areBooksLoading: state.book.loading,
+    areBooksCrashed: state.book.error,
   }
 }
+
+// mapDispatchToProps allows you to define props that, once invoked, will dispatch actions!
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -25,7 +29,13 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const CartIndicator = ({ cartLength, userName, changeUsernameProp }) => {
+const CartIndicator = ({
+  cartLength,
+  userName,
+  changeUsernameProp,
+  areBooksLoading,
+  areBooksCrashed,
+}) => {
   const navigate = useNavigate()
 
   const [inputValue, setInputValue] = useState('')
@@ -41,8 +51,11 @@ const CartIndicator = ({ cartLength, userName, changeUsernameProp }) => {
   }
 
   return (
-    <div className="ml-auto mt-2">
-      {userName ? (
+    <div className="ml-auto mt-2 d-flex">
+      {areBooksLoading && <Spinner variant="success" animation="border" />}
+      {areBooksCrashed ? (
+        <Alert variant="danger">FETCH ERROR :(</Alert>
+      ) : userName ? (
         <Button color="primary" onClick={() => navigate('/cart')}>
           <FaShoppingCart />
           <span className="ml-2">{cartLength}</span>

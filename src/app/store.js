@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cartReducer from '../slices/cart/cartSlice'
 import userReducer from '../slices/user/userSlice'
+import bookReducer from '../slices/book/bookSlice'
 
 export default configureStore({
   // let's define our reducers
@@ -8,6 +9,7 @@ export default configureStore({
     cart: cartReducer,
     // the name "cart" should match the name of the slice!
     user: userReducer,
+    book: bookReducer,
   },
 })
 
